@@ -20,15 +20,14 @@ Creating a graph with multiple data series:
 """
 def plot_mult(x_values, y_lists, x_label, y_labels, plot_title):
     fig, ax1 = plt.subplots()
+    ax1.set_xlabel(x_label)
 
     for i, y_list in enumerate(y_lists):
-        if i == 0:
-            continue
         ax1.set_ylabel(y_labels[i], color = COLOR_LIST[i])
         ax1.tick_params(axis='y', color=COLOR_LIST[i],labelcolor=COLOR_LIST[i])
-        ax1.set_xlabel(x_label)
-        ax1.plot(x_values, y_lists[i], COLOR_LIST[i], lw=2, label=y_labels[i])
-        ax1 = ax1.twinx()
+        ax1.plot(x_values, y_list, COLOR_LIST[i], lw=2, label=y_labels[i])
+        if (i < len(y_lists) - 1):
+            ax1 = ax1.twinx()
 
     plt.title(plot_title)
     plt.grid()
