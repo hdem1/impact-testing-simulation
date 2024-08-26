@@ -1,4 +1,5 @@
 {
-    "length_arm_m":1,
-    "mass_head_kg":3
+    "length_arm_m":0.75,
+    "mass_head_kg":3,
+    "arm_extrusion_kg":2.73
 }
