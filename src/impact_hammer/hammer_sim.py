@@ -25,7 +25,7 @@ G_ACCEL = 9.81 # Gravitational Acceleration [m/s^2]
 # -----
 
 class HammerSimulation:
-    initial_conditions = [np.deg2rad(179), 0]
+    initial_conditions = [np.deg2rad(179), -2.5]
     ODE_func = None
     dt = 0.001 # s
     duration = 100 # s
