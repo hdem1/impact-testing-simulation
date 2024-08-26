@@ -25,7 +25,7 @@ G_ACCEL = 9.81 # Gravitational Acceleration [m/s^2]
 # -----
 
 class HammerSimulation:
-    initial_conditions = [np.deg2rad(175), 0]
+    initial_conditions = [np.deg2rad(179), 0]
     ODE_func = None
     dt = 0.001 # s
     duration = 100 # s
@@ -69,7 +69,7 @@ class HammerSimulation:
         if self.sol == None:
             print("You must run the simulation before attempting to access its parameters")
             return
-        return abs(np.deg2rad(self.get_theta_dot_deg())) * self.hammer_structure.L_hammer     # m/s
+        return abs(np.deg2rad(self.get_theta_dot_deg())) * self.hammer_structure.L_arm     # m/s
 
     def get_max_speed(self):
         if self.sol == None:
@@ -90,7 +90,7 @@ class SimpleHammerSimulation(HammerSimulation):
 
         def hammer_ODE(t, y):
             ang_deriv = y[1]
-            ang_vel_deriv = - G_ACCEL * np.sin(y[0]) / self.hammer_structure.L_hammer
+            ang_vel_deriv = - G_ACCEL * np.sin(y[0]) / self.hammer_structure.L_arm
             return ang_deriv, ang_vel_deriv
         
         self.configure_ODE_func(hammer_ODE)
@@ -103,7 +103,7 @@ class TorsionalSpringSimulation(HammerSimulation):
             k_s = max_torque / rad_range #N/rad
             ang_equil = np.pi - rad_range
             ang_deriv = y[1]
-            ang_vel_deriv = (-1 * k_s * (y[0] - ang_equil) - G_ACCEL * np.sin(y[0]))/ self.hammer_structure.L_hammer
+            ang_vel_deriv = (-1 * k_s * (y[0] - ang_equil)) / self.hammer_structure.get_moment_of_inertia() - (G_ACCEL * np.sin(y[0]))/ self.hammer_structure.L_arm
             return ang_deriv, ang_vel_deriv
 
         self.configure_ODE_func(hammer_ODE)
@@ -115,7 +115,7 @@ class MotorizedHammerSimulation(HammerSimulation):
         def hammer_ODE(t, y):
             motor_torque = torque_func(y[1])
             ang_deriv = y[1]
-            ang_vel_deriv = (-1 * motor_torque - G_ACCEL * np.sin(y[0]))/ self.hammer_structure.L_hammer
+            ang_vel_deriv = -1 * motor_torque / self.hammer_structure.get_moment_of_inertia() - (G_ACCEL * np.sin(y[0]))/ self.hammer_structure.L_arm
             return ang_deriv, ang_vel_deriv
 
         self.configure_ODE_func(hammer_ODE)
