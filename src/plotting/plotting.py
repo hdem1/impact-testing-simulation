@@ -1,6 +1,9 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.animation as animation
+
+matplotlib.rcParams['font.family'] = 'arial'
 
 # The list of colors that are always used:
 COLOR_LIST = ['r', 'b', 'g']
